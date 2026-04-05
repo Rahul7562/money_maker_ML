@@ -357,3 +357,87 @@ AssertionError: API Secret required for private endpoints
 2026-04-05 15:02:26,521 [ExecutionAgent] INFO: [PAPER-FUTURES] OPEN_SHORT RIVERUSDT qty=5.661367 @ 11.824000 | cash=466.46 | used_margin=33.47
 2026-04-05 15:02:26,521 [Orchestrator] INFO: Execution result | RIVERUSDT | paper_executed | ok
 2026-04-05 15:02:26,521 [Orchestrator] INFO: Portfolio | mode=FUTURES | cash=466.46 USDT | used_margin=33.47 | positions=66.94 | unrealized=0.00 | equity=499.93 | day=-0.01% | realized=0.00 | trades=1
+2026-04-05 15:35:22,624 [Orchestrator] INFO: ========================================================================
+2026-04-05 15:35:22,625 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 15:35:22,625 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 15:35:22,625 [Orchestrator] INFO: Market mode: SPOT | Interval: 1h | Quote asset: USDT
+2026-04-05 15:35:22,626 [Orchestrator] INFO: ========================================================================
+2026-04-05 15:35:23,182 [DataAgent] INFO: DataAgent ready -> mode=SPOT interval=1h quote=USDT max_symbols=35
+2026-04-05 15:35:23,183 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER | market=SPOT
+2026-04-05 15:35:23,183 [Orchestrator] INFO: Scheduler active: every 60 minutes
+2026-04-05 15:35:23,184 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 15:35:23,184 [Orchestrator] INFO: Cycle #1 | 2026-04-05T10:05:23.184640
+2026-04-05 15:35:24,093 [DataAgent] INFO: Selected 8 symbols for scanning (top by 24h quote volume)
+2026-04-05 15:35:26,211 [DataAgent] INFO: Fetched candles for 8/8 symbols
+2026-04-05 15:35:59,022 [Orchestrator] INFO: Regime distribution | bull=1 bear=0 sideways=7
+2026-04-05 15:35:59,022 [Orchestrator] INFO: WFO quality | tuned=4 symbols | avg_test_ret=0.004 | avg_win_rate=0.12
+2026-04-05 15:35:59,023 [Orchestrator] INFO: Top ranked signals: BTCUSDT:SELL:0.65 | ETHUSDT:SELL:0.62 | SOLUSDT:SELL:0.62 | XRPUSDT:SELL:0.62 | DOGEUSDT:SELL:0.62
+2026-04-05 15:35:59,023 [Orchestrator] INFO: No actionable signal found in this cycle
+2026-04-05 15:35:59,023 [Orchestrator] INFO: Portfolio | mode=SPOT | cash=500.00 USDT | used_margin=0.00 | positions=0.00 | unrealized=0.00 | equity=500.00 | day=0.00% | realized=0.00 | trades=0
+2026-04-05 15:36:03,283 [Orchestrator] INFO: Simulation | tested=8 | avg_ret=-7.74% | win_rate=0.0% | avg_dd=10.45% | best=BTCUSDT 0.00% | worst=STOUSDT -61.40%
+2026-04-05 15:37:41,701 [Orchestrator] INFO: ========================================================================
+2026-04-05 15:37:41,701 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 15:37:41,702 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 15:37:41,702 [Orchestrator] INFO: Market mode: SPOT | Interval: 1h | Quote asset: USDT
+2026-04-05 15:37:41,702 [Orchestrator] INFO: ========================================================================
+2026-04-05 15:37:42,240 [DataAgent] INFO: DataAgent ready -> mode=SPOT interval=1h quote=USDT max_symbols=35
+2026-04-05 15:37:42,240 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER | market=SPOT
+2026-04-05 15:37:42,241 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 15:37:42,241 [Orchestrator] INFO: Cycle #1 | 2026-04-05T10:07:42.241024
+2026-04-05 15:37:43,247 [DataAgent] INFO: Selected 8 symbols for scanning (top by 24h quote volume)
+2026-04-05 15:37:44,315 [DataAgent] INFO: Fetched candles for 8/8 symbols
+2026-04-05 15:38:17,869 [Orchestrator] INFO: Regime distribution | bull=1 bear=0 sideways=7
+2026-04-05 15:38:17,869 [Orchestrator] INFO: WFO quality | tuned=4 symbols | avg_test_ret=0.005 | avg_win_rate=0.12
+2026-04-05 15:38:17,870 [Orchestrator] INFO: Top ranked signals: BTCUSDT:SELL:0.65 | ETHUSDT:SELL:0.62 | SOLUSDT:SELL:0.62 | XRPUSDT:SELL:0.62 | DOGEUSDT:SELL:0.62
+2026-04-05 15:38:17,870 [Orchestrator] INFO: No actionable signal found in this cycle
+2026-04-05 15:38:17,870 [Orchestrator] INFO: Portfolio | mode=SPOT | cash=500.00 USDT | used_margin=0.00 | positions=0.00 | unrealized=0.00 | equity=500.00 | day=0.00% | realized=0.00 | trades=0
+2026-04-05 15:38:41,703 [Orchestrator] INFO: ========================================================================
+2026-04-05 15:38:41,703 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 15:38:41,703 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 15:38:41,704 [Orchestrator] INFO: Market mode: SPOT | Interval: 1h | Quote asset: USDT
+2026-04-05 15:38:41,704 [Orchestrator] INFO: ========================================================================
+2026-04-05 15:38:42,240 [DataAgent] INFO: DataAgent ready -> mode=SPOT interval=1h quote=USDT max_symbols=35
+2026-04-05 15:38:42,240 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER | market=SPOT
+2026-04-05 15:38:42,241 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 15:38:42,241 [Orchestrator] INFO: Cycle #1 | 2026-04-05T10:08:42.241049
+2026-04-05 15:38:42,969 [DataAgent] INFO: Selected 8 symbols for scanning (top by 24h quote volume)
+2026-04-05 15:38:44,029 [DataAgent] INFO: Fetched candles for 8/8 symbols
+2026-04-05 15:38:50,454 [Orchestrator] INFO: Regime distribution | bull=1 bear=0 sideways=7
+2026-04-05 15:38:50,454 [Orchestrator] INFO: WFO quality | tuned=2 symbols | avg_test_ret=0.000 | avg_win_rate=0.00
+2026-04-05 15:38:50,454 [Orchestrator] INFO: Top ranked signals: BTCUSDT:SELL:0.65 | ETHUSDT:SELL:0.62 | SOLUSDT:SELL:0.62 | XRPUSDT:SELL:0.62 | DOGEUSDT:SELL:0.62
+2026-04-05 15:38:50,454 [Orchestrator] INFO: No actionable signal found in this cycle
+2026-04-05 15:38:50,455 [Orchestrator] INFO: Portfolio | mode=SPOT | cash=500.00 USDT | used_margin=0.00 | positions=0.00 | unrealized=0.00 | equity=500.00 | day=0.00% | realized=0.00 | trades=0
+2026-04-05 15:41:28,766 [Orchestrator] INFO: ========================================================================
+2026-04-05 15:41:28,767 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 15:41:28,767 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 15:41:28,767 [Orchestrator] INFO: Market mode: SPOT | Interval: 1h | Quote asset: USDT
+2026-04-05 15:41:28,767 [Orchestrator] INFO: ========================================================================
+2026-04-05 15:41:29,315 [DataAgent] INFO: DataAgent ready -> mode=SPOT interval=1h quote=USDT max_symbols=35
+2026-04-05 15:41:29,316 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER | market=SPOT
+2026-04-05 15:41:29,317 [Orchestrator] INFO: Scheduler active: every 60 minutes
+2026-04-05 15:41:29,317 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 15:41:29,318 [Orchestrator] INFO: Cycle #1 | 2026-04-05T10:11:29.318665
+2026-04-05 15:41:30,118 [DataAgent] INFO: Selected 8 symbols for scanning (top by 24h quote volume)
+2026-04-05 15:41:31,189 [DataAgent] INFO: Fetched candles for 8/8 symbols
+2026-04-05 15:42:04,119 [Orchestrator] INFO: ========================================================================
+2026-04-05 15:42:04,120 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 15:42:04,120 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 15:42:04,120 [Orchestrator] INFO: Market mode: SPOT | Interval: 1h | Quote asset: USDT
+2026-04-05 15:42:04,120 [Orchestrator] INFO: ========================================================================
+2026-04-05 15:42:04,617 [DataAgent] INFO: DataAgent ready -> mode=SPOT interval=1h quote=USDT max_symbols=35
+2026-04-05 15:42:04,618 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER | market=SPOT
+2026-04-05 15:42:04,619 [Orchestrator] INFO: Scheduler active: every 60 minutes
+2026-04-05 15:42:04,620 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 15:42:04,620 [Orchestrator] INFO: Cycle #1 | 2026-04-05T10:12:04.620793
+2026-04-05 15:42:05,547 [DataAgent] INFO: Selected 8 symbols for scanning (top by 24h quote volume)
+2026-04-05 15:42:06,758 [DataAgent] INFO: Fetched candles for 8/8 symbols
+2026-04-05 15:42:13,192 [Orchestrator] INFO: Regime distribution | bull=1 bear=0 sideways=7
+2026-04-05 15:42:13,192 [Orchestrator] INFO: WFO quality | tuned=2 symbols | avg_test_ret=0.000 | avg_win_rate=0.00
+2026-04-05 15:42:13,192 [Orchestrator] INFO: Top ranked signals: BTCUSDT:SELL:0.65 | ETHUSDT:SELL:0.62 | SOLUSDT:SELL:0.62 | XRPUSDT:SELL:0.62 | DOGEUSDT:SELL:0.62
+2026-04-05 15:42:13,193 [Orchestrator] INFO: No actionable signal found in this cycle
+2026-04-05 15:42:13,193 [Orchestrator] INFO: Portfolio | mode=SPOT | cash=500.00 USDT | used_margin=0.00 | positions=0.00 | unrealized=0.00 | equity=500.00 | day=0.00% | realized=0.00 | trades=0
