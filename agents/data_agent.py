@@ -12,6 +12,7 @@ from config import (
     BINANCE_API_SECRET,
     CANDLES_LIMIT,
     EXCLUDED_SYMBOL_KEYWORDS,
+    MARKET_MODE,
     MAX_SYMBOLS_ANALYZED,
     MIN_24H_QUOTE_VOLUME,
     QUOTE_ASSET,
@@ -37,9 +38,15 @@ class DataAgent:
     """Fetches market data and builds a robust multi-coin trading universe."""
 
     def __init__(self):
-        self.client = Client(BINANCE_API_KEY, BINANCE_API_SECRET)
+        self.client = Client(
+            BINANCE_API_KEY,
+            BINANCE_API_SECRET,
+            requests_params={"timeout": 12},
+        )
+        self.market_mode = MARKET_MODE
         logger.info(
-            "DataAgent ready -> interval=%s quote=%s max_symbols=%s",
+            "DataAgent ready -> mode=%s interval=%s quote=%s max_symbols=%s",
+            self.market_mode,
             TRADE_INTERVAL,
             QUOTE_ASSET,
             MAX_SYMBOLS_ANALYZED,
@@ -54,8 +61,12 @@ class DataAgent:
     def get_tradeable_symbols(self) -> List[str]:
         """Return top liquid spot symbols (e.g. BTCUSDT, ETHUSDT)."""
         try:
-            exchange_info = self.client.get_exchange_info()
-            tickers = {item["symbol"]: item for item in self.client.get_ticker()}
+            if self.market_mode == "FUTURES":
+                exchange_info = self.client.futures_exchange_info()
+                tickers = {item["symbol"]: item for item in self.client.futures_ticker()}
+            else:
+                exchange_info = self.client.get_exchange_info()
+                tickers = {item["symbol"]: item for item in self.client.get_ticker()}
         except Exception as exc:
             logger.error("Failed to fetch exchange universe: %s", exc)
             raise
@@ -69,7 +80,9 @@ class DataAgent:
                 continue
             if meta.get("quoteAsset") != QUOTE_ASSET:
                 continue
-            if not meta.get("isSpotTradingAllowed", False):
+            if self.market_mode == "SPOT" and not meta.get("isSpotTradingAllowed", False):
+                continue
+            if self.market_mode == "FUTURES" and meta.get("contractType") not in {"PERPETUAL", None}:
                 continue
             if not symbol.endswith(QUOTE_ASSET):
                 continue
@@ -106,11 +119,18 @@ class DataAgent:
         """Fetch recent OHLCV candles for one symbol."""
         fetch_limit = limit or CANDLES_LIMIT
         try:
-            raw = self.client.get_klines(
-                symbol=symbol,
-                interval=TRADE_INTERVAL,
-                limit=fetch_limit,
-            )
+            if self.market_mode == "FUTURES":
+                raw = self.client.futures_klines(
+                    symbol=symbol,
+                    interval=TRADE_INTERVAL,
+                    limit=fetch_limit,
+                )
+            else:
+                raw = self.client.get_klines(
+                    symbol=symbol,
+                    interval=TRADE_INTERVAL,
+                    limit=fetch_limit,
+                )
             if not raw:
                 raise RuntimeError(f"No candles returned for {symbol}")
 
@@ -160,8 +180,13 @@ class DataAgent:
     def get_balance(self, asset: str = QUOTE_ASSET) -> float:
         """Get free balance for an asset from Binance account."""
         try:
-            info = self.client.get_asset_balance(asset=asset)
-            balance = self._to_float(info.get("free") if info else 0.0)
+            if self.market_mode == "FUTURES":
+                balances = self.client.futures_account_balance()
+                row = next((b for b in balances if b.get("asset") == asset), None)
+                balance = self._to_float((row or {}).get("availableBalance", 0.0))
+            else:
+                info = self.client.get_asset_balance(asset=asset)
+                balance = self._to_float(info.get("free") if info else 0.0)
             logger.info("Live balance %s: %.4f", asset, balance)
             return balance
         except Exception as exc:
@@ -170,5 +195,18 @@ class DataAgent:
 
     def get_current_price(self, symbol: str) -> float:
         """Get current market price for a symbol."""
-        ticker = self.client.get_symbol_ticker(symbol=symbol)
+        if self.market_mode == "FUTURES":
+            ticker = self.client.futures_symbol_ticker(symbol=symbol)
+        else:
+            ticker = self.client.get_symbol_ticker(symbol=symbol)
         return self._to_float(ticker.get("price"))
+
+    def get_position_qty(self, symbol: str) -> float:
+        """Get signed position quantity for live futures; 0 for spot."""
+        if self.market_mode != "FUTURES":
+            return 0.0
+
+        rows = self.client.futures_position_information(symbol=symbol)
+        if not rows:
+            return 0.0
+        return self._to_float(rows[0].get("positionAmt", 0.0))
