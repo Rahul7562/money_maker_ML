@@ -1,0 +1,251 @@
+2026-04-05 13:43:58,931 [Orchestrator] INFO: ============================================================
+2026-04-05 13:43:58,931 [Orchestrator] INFO:   Trading Bot Starting Up
+2026-04-05 13:43:58,932 [Orchestrator] INFO:   Mode: PAPER TRADING
+2026-04-05 13:43:58,932 [Orchestrator] INFO:   Interval: 1h
+2026-04-05 13:43:58,932 [Orchestrator] INFO: ============================================================
+2026-04-05 13:43:59,119 [ExecutionAgent] INFO: ExecutionAgent ready | Mode: PAPER
+2026-04-05 13:43:59,121 [Orchestrator] INFO: Cycle #1 | 2026-04-05 13:43:59
+2026-04-05 13:43:59,267 [DataAgent] INFO: Fetched 100 candles. Latest close: 66862.18
+2026-04-05 13:43:59,267 [DataAgent] ERROR: Failed to fetch balance: API Secret required for private endpoints
+2026-04-05 13:43:59,280 [Orchestrator] ERROR: Cycle failed: API Secret required for private endpoints
+Traceback (most recent call last):
+  File "d:\Rahul\Projects\money_maker_ML\main.py", line 56, in run_cycle
+    balance = self.data_agent.get_balance("USDT")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\Rahul\Projects\money_maker_ML\agents\data_agent.py", line 54, in get_balance
+    info = self.client.get_asset_balance(asset=asset)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\binance\client.py", line 2189, in get_asset_balance
+    res = self.get_account(**params)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\binance\client.py", line 2166, in get_account
+    return self._get("account", True, data=params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\binance\client.py", line 180, in _get
+    return self._request_api("get", path, signed, version, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\binance\client.py", line 117, in _request_api
+    return self._request(method, uri, signed, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\binance\client.py", line 74, in _request
+    kwargs = self._get_request_kwargs(method, signed, force_params, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\binance\base_client.py", line 477, in _get_request_kwargs
+    kwargs["data"]["signature"] = self._generate_signature(kwargs["data"])
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\binance\base_client.py", line 354, in _generate_signature
+    res = sig_func(query_string)
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\binance\base_client.py", line 338, in _hmac_signature
+    assert self.API_SECRET, "API Secret required for private endpoints"
+           ^^^^^^^^^^^^^^^
+AssertionError: API Secret required for private endpoints
+2026-04-05 13:43:59,288 [Orchestrator] INFO: Scheduled to run every 60 minutes
+2026-04-05 13:53:15,434 [Orchestrator] INFO: ============================================================
+2026-04-05 13:53:15,434 [Orchestrator] INFO:   Trading Bot Starting Up
+2026-04-05 13:53:15,434 [Orchestrator] INFO:   Mode: PAPER TRADING
+2026-04-05 13:53:15,448 [Orchestrator] INFO:   Interval: 1h
+2026-04-05 13:53:15,448 [Orchestrator] INFO: ============================================================
+2026-04-05 13:53:15,624 [ExecutionAgent] INFO: ExecutionAgent ready | Mode: PAPER
+2026-04-05 13:53:15,628 [Orchestrator] INFO: Cycle #1 | 2026-04-05 13:53:15
+2026-04-05 13:53:15,772 [DataAgent] INFO: Fetched 100 candles. Latest close: 66899.34
+2026-04-05 13:53:15,898 [DataAgent] INFO: Balance USDT: 0.0
+2026-04-05 13:53:16,046 [ExecutionAgent] INFO: No execution needed: Balance too low: $0.00 < $5.0 minimum
+2026-04-05 13:53:16,046 [Orchestrator] INFO: Portfolio | USDT: $500.00 | BTC: 0.000000 | Total: $500.00 | Trades: 0
+2026-04-05 13:53:16,047 [Orchestrator] INFO: Scheduled to run every 60 minutes
+2026-04-05 14:06:34,773 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:06:34,778 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 14:06:34,779 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 14:06:34,779 [Orchestrator] INFO: Interval: 1h | Quote asset: USDT
+2026-04-05 14:06:34,780 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:06:34,958 [DataAgent] INFO: DataAgent ready -> interval=1h quote=USDT max_symbols=35
+2026-04-05 14:06:34,959 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER
+2026-04-05 14:06:34,959 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 14:06:34,960 [Orchestrator] INFO: Cycle #1 | 2026-04-05T08:36:34.960451
+2026-04-05 14:06:36,423 [DataAgent] INFO: Selected 14 symbols for scanning (top by 24h quote volume)
+2026-04-05 14:06:38,301 [DataAgent] INFO: Fetched candles for 14/14 symbols
+2026-04-05 14:06:38,428 [Orchestrator] INFO: Top ranked signals: XAUTUSDT:SELL:0.74 | ETHUSDT:SELL:0.65 | SOLUSDT:SELL:0.65 | DOGEUSDT:SELL:0.64 | USDCUSDT:BUY:0.63
+2026-04-05 14:06:38,428 [RiskAgent] WARNING: Risk -> REJECTED [XAUTUSDT] No existing position to sell
+2026-04-05 14:06:38,429 [ExecutionAgent] INFO: Execution skipped [XAUTUSDT]: No existing position to sell
+2026-04-05 14:06:38,429 [Orchestrator] INFO: Execution result | XAUTUSDT | skipped | No existing position to sell
+2026-04-05 14:06:38,430 [Orchestrator] INFO: Portfolio | cash=500.00 USDT | positions=0.00 | equity=500.00 | realized_pnl=0.00 | trades=0
+2026-04-05 14:06:53,313 [Orchestrator] INFO: Simulation | tested=12 | avg_ret=2.94% | win_rate=25.0% | avg_dd=12.11% | best=DUSDT 60.30% | worst=STOUSDT -12.59%
+2026-04-05 14:07:03,135 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:07:03,136 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 14:07:03,137 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 14:07:03,138 [Orchestrator] INFO: Interval: 1h | Quote asset: USDT
+2026-04-05 14:07:03,139 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:07:03,297 [DataAgent] INFO: DataAgent ready -> interval=1h quote=USDT max_symbols=35
+2026-04-05 14:07:03,300 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER
+2026-04-05 14:07:03,301 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 14:07:03,303 [Orchestrator] INFO: Cycle #1 | 2026-04-05T08:37:03.303326
+2026-04-05 14:07:04,536 [DataAgent] INFO: Selected 14 symbols for scanning (top by 24h quote volume)
+2026-04-05 14:07:06,688 [DataAgent] INFO: Fetched candles for 14/14 symbols
+2026-04-05 14:07:06,842 [Orchestrator] INFO: Top ranked signals: XAUTUSDT:SELL:0.74 | ETHUSDT:SELL:0.65 | SOLUSDT:SELL:0.65 | DOGEUSDT:SELL:0.64 | USDCUSDT:BUY:0.63
+2026-04-05 14:07:06,843 [RiskAgent] WARNING: Risk -> REJECTED [XAUTUSDT] No existing position to sell
+2026-04-05 14:07:06,843 [ExecutionAgent] INFO: Execution skipped [XAUTUSDT]: No existing position to sell
+2026-04-05 14:07:06,843 [Orchestrator] INFO: Execution result | XAUTUSDT | skipped | No existing position to sell
+2026-04-05 14:07:06,843 [Orchestrator] INFO: Portfolio | cash=500.00 USDT | positions=0.00 | equity=500.00 | realized_pnl=0.00 | trades=0
+2026-04-05 14:07:28,741 [Orchestrator] INFO: Simulation | tested=12 | avg_ret=2.92% | win_rate=25.0% | avg_dd=12.11% | best=DUSDT 60.12% | worst=STOUSDT -12.59%
+2026-04-05 14:08:08,789 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:08:08,789 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 14:08:08,789 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 14:08:08,790 [Orchestrator] INFO: Interval: 1h | Quote asset: USDT
+2026-04-05 14:08:08,790 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:08:08,949 [DataAgent] INFO: DataAgent ready -> interval=1h quote=USDT max_symbols=35
+2026-04-05 14:08:08,949 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER
+2026-04-05 14:08:08,950 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 14:08:08,950 [Orchestrator] INFO: Cycle #1 | 2026-04-05T08:38:08.950566
+2026-04-05 14:08:10,393 [DataAgent] INFO: Selected 14 symbols for scanning (top by 24h quote volume)
+2026-04-05 14:08:12,490 [DataAgent] INFO: Fetched candles for 14/14 symbols
+2026-04-05 14:08:12,648 [Orchestrator] INFO: Top ranked signals: XAUTUSDT:SELL:0.72 | USDCUSDT:BUY:0.67 | ETHUSDT:SELL:0.65 | SOLUSDT:SELL:0.65 | DOGEUSDT:SELL:0.64
+2026-04-05 14:08:12,649 [RiskAgent] WARNING: Risk -> REJECTED [XAUTUSDT] No existing position to sell
+2026-04-05 14:08:12,649 [ExecutionAgent] INFO: Execution skipped [XAUTUSDT]: No existing position to sell
+2026-04-05 14:08:12,649 [Orchestrator] INFO: Execution result | XAUTUSDT | skipped | No existing position to sell
+2026-04-05 14:08:12,650 [Orchestrator] INFO: Portfolio | cash=500.00 USDT | positions=0.00 | equity=500.00 | realized_pnl=0.00 | trades=0
+2026-04-05 14:08:35,988 [Orchestrator] INFO: Simulation | tested=12 | avg_ret=2.91% | win_rate=25.0% | avg_dd=12.11% | best=DUSDT 60.07% | worst=STOUSDT -12.59%
+2026-04-05 14:12:55,011 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:12:55,062 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 14:12:55,062 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 14:12:55,063 [Orchestrator] INFO: Interval: 1h | Quote asset: USDT
+2026-04-05 14:12:55,063 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:12:55,216 [DataAgent] INFO: DataAgent ready -> interval=1h quote=USDT max_symbols=35
+2026-04-05 14:12:55,218 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER
+2026-04-05 14:12:55,218 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 14:12:55,219 [Orchestrator] INFO: Cycle #1 | 2026-04-05T08:42:55.219086
+2026-04-05 14:12:56,422 [DataAgent] INFO: Selected 14 symbols for scanning (top by 24h quote volume)
+2026-04-05 14:12:58,806 [DataAgent] INFO: Fetched candles for 14/14 symbols
+2026-04-05 14:12:58,978 [Orchestrator] INFO: Top ranked signals: XAUTUSDT:SELL:0.73 | USDCUSDT:BUY:0.67 | ETHUSDT:SELL:0.65 | SOLUSDT:SELL:0.65 | DOGEUSDT:SELL:0.64
+2026-04-05 14:12:58,979 [RiskAgent] WARNING: Risk -> REJECTED [XAUTUSDT] No existing position to sell
+2026-04-05 14:12:58,979 [RiskAgent] INFO: Risk -> APPROVED | Approved BUY USDCUSDT | conf=0.67 | size=5.6% | SL=0.9820982 | TP=1.0451045
+2026-04-05 14:12:58,979 [ExecutionAgent] INFO: [PAPER] BUY USDCUSDT qty=28.069093 @ 1.000100 | cash=471.90
+2026-04-05 14:12:58,979 [Orchestrator] INFO: Execution result | USDCUSDT | paper_executed | ok
+2026-04-05 14:12:58,981 [Orchestrator] INFO: Portfolio | cash=471.90 USDT | positions=28.07 | equity=499.97 | realized_pnl=0.00 | trades=1
+2026-04-05 14:13:17,521 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:13:17,521 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 14:13:17,522 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 14:13:17,522 [Orchestrator] INFO: Interval: 1h | Quote asset: USDT
+2026-04-05 14:13:17,522 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:13:17,677 [DataAgent] INFO: DataAgent ready -> interval=1h quote=USDT max_symbols=35
+2026-04-05 14:13:17,677 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER
+2026-04-05 14:13:17,677 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 14:13:17,678 [Orchestrator] INFO: Cycle #1 | 2026-04-05T08:43:17.678963
+2026-04-05 14:13:18,583 [DataAgent] INFO: Selected 14 symbols for scanning (top by 24h quote volume)
+2026-04-05 14:13:20,917 [DataAgent] INFO: Fetched candles for 14/14 symbols
+2026-04-05 14:13:21,055 [Orchestrator] INFO: Top ranked signals: XAUTUSDT:SELL:0.73 | ETHUSDT:SELL:0.65 | SOLUSDT:SELL:0.65 | DOGEUSDT:SELL:0.64 | XRPUSDT:SELL:0.63
+2026-04-05 14:13:21,056 [RiskAgent] WARNING: Risk -> REJECTED [XAUTUSDT] No existing position to sell
+2026-04-05 14:13:21,056 [RiskAgent] WARNING: Risk -> REJECTED [ETHUSDT] No existing position to sell
+2026-04-05 14:13:21,056 [RiskAgent] WARNING: Risk -> REJECTED [SOLUSDT] No existing position to sell
+2026-04-05 14:13:21,056 [RiskAgent] WARNING: Risk -> REJECTED [DOGEUSDT] No existing position to sell
+2026-04-05 14:13:21,057 [RiskAgent] WARNING: Risk -> REJECTED [XRPUSDT] No existing position to sell
+2026-04-05 14:13:21,057 [RiskAgent] INFO: Risk -> APPROVED | Approved BUY USDCUSDT | conf=0.63 | size=4.6% | SL=0.9821964 | TP=1.045209
+2026-04-05 14:13:21,060 [ExecutionAgent] INFO: [PAPER] BUY USDCUSDT qty=23.202130 @ 1.000200 | cash=476.77
+2026-04-05 14:13:21,061 [Orchestrator] INFO: Execution result | USDCUSDT | paper_executed | ok
+2026-04-05 14:13:21,063 [Orchestrator] INFO: Portfolio | cash=476.77 USDT | positions=23.21 | equity=499.98 | realized_pnl=0.00 | trades=1
+2026-04-05 14:13:34,082 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:13:34,083 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 14:13:34,083 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 14:13:34,083 [Orchestrator] INFO: Interval: 1h | Quote asset: USDT
+2026-04-05 14:13:34,084 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:13:34,246 [DataAgent] INFO: DataAgent ready -> interval=1h quote=USDT max_symbols=35
+2026-04-05 14:13:34,246 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER
+2026-04-05 14:13:34,246 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 14:13:34,246 [Orchestrator] INFO: Cycle #1 | 2026-04-05T08:43:34.246238
+2026-04-05 14:13:35,153 [DataAgent] INFO: Selected 14 symbols for scanning (top by 24h quote volume)
+2026-04-05 14:13:38,299 [DataAgent] INFO: Fetched candles for 14/14 symbols
+2026-04-05 14:13:38,459 [Orchestrator] INFO: Top ranked signals: XAUTUSDT:SELL:0.72 | USDCUSDT:BUY:0.67 | SOLUSDT:SELL:0.65 | ETHUSDT:SELL:0.65 | DOGEUSDT:SELL:0.64
+2026-04-05 14:13:38,460 [RiskAgent] WARNING: Risk -> REJECTED [XAUTUSDT] No existing position to sell
+2026-04-05 14:13:38,460 [RiskAgent] INFO: Risk -> APPROVED | Approved BUY USDCUSDT | conf=0.67 | size=5.6% | SL=0.9820982 | TP=1.0451045
+2026-04-05 14:13:38,461 [ExecutionAgent] INFO: [PAPER] BUY USDCUSDT qty=28.069093 @ 1.000100 | cash=471.90
+2026-04-05 14:13:38,461 [Orchestrator] INFO: Execution result | USDCUSDT | paper_executed | ok
+2026-04-05 14:13:38,462 [Orchestrator] INFO: Portfolio | cash=471.90 USDT | positions=28.07 | equity=499.97 | realized_pnl=0.00 | trades=1
+2026-04-05 14:13:41,246 [Orchestrator] INFO: Simulation | tested=8 | avg_ret=-1.25% | win_rate=0.0% | avg_dd=1.75% | best=STOUSDT 0.00% | worst=SOLUSDT -3.86%
+2026-04-05 14:14:53,398 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:14:53,399 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 14:14:53,399 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 14:14:53,400 [Orchestrator] INFO: Interval: 1h | Quote asset: USDT
+2026-04-05 14:14:53,400 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:14:53,625 [DataAgent] INFO: DataAgent ready -> interval=1h quote=USDT max_symbols=35
+2026-04-05 14:14:53,626 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER
+2026-04-05 14:14:53,630 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 14:14:53,631 [Orchestrator] INFO: Cycle #1 | 2026-04-05T08:44:53.631625
+2026-04-05 14:14:55,130 [DataAgent] INFO: Selected 12 symbols for scanning (top by 24h quote volume)
+2026-04-05 14:14:57,201 [DataAgent] INFO: Fetched candles for 12/12 symbols
+2026-04-05 14:14:57,425 [Orchestrator] INFO: Top ranked signals: SOLUSDT:SELL:0.65 | ETHUSDT:SELL:0.65 | DOGEUSDT:SELL:0.64 | XRPUSDT:SELL:0.63 | BTCUSDT:SELL:0.62
+2026-04-05 14:14:57,426 [RiskAgent] WARNING: Risk -> REJECTED [SOLUSDT] No existing position to sell
+2026-04-05 14:14:57,426 [RiskAgent] WARNING: Risk -> REJECTED [ETHUSDT] No existing position to sell
+2026-04-05 14:14:57,427 [RiskAgent] WARNING: Risk -> REJECTED [DOGEUSDT] No existing position to sell
+2026-04-05 14:14:57,427 [RiskAgent] WARNING: Risk -> REJECTED [XRPUSDT] No existing position to sell
+2026-04-05 14:14:57,427 [RiskAgent] WARNING: Risk -> REJECTED [BTCUSDT] No existing position to sell
+2026-04-05 14:14:57,428 [Orchestrator] INFO: No actionable signal found in this cycle
+2026-04-05 14:14:57,428 [Orchestrator] INFO: Portfolio | cash=500.00 USDT | positions=0.00 | equity=500.00 | realized_pnl=0.00 | trades=0
+2026-04-05 14:15:10,349 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:15:10,350 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 14:15:10,350 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 14:15:10,350 [Orchestrator] INFO: Interval: 1h | Quote asset: USDT
+2026-04-05 14:15:10,350 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:15:10,513 [DataAgent] INFO: DataAgent ready -> interval=1h quote=USDT max_symbols=35
+2026-04-05 14:15:10,513 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER
+2026-04-05 14:15:10,513 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 14:15:10,513 [Orchestrator] INFO: Cycle #1 | 2026-04-05T08:45:10.513763
+2026-04-05 14:15:11,547 [DataAgent] INFO: Selected 12 symbols for scanning (top by 24h quote volume)
+2026-04-05 14:15:13,431 [DataAgent] INFO: Fetched candles for 12/12 symbols
+2026-04-05 14:15:13,649 [Orchestrator] INFO: Top ranked signals: SOLUSDT:SELL:0.65 | ETHUSDT:SELL:0.65 | DOGEUSDT:SELL:0.64 | XRPUSDT:SELL:0.63 | BTCUSDT:SELL:0.62
+2026-04-05 14:15:13,650 [RiskAgent] WARNING: Risk -> REJECTED [SOLUSDT] No existing position to sell
+2026-04-05 14:15:13,650 [RiskAgent] WARNING: Risk -> REJECTED [ETHUSDT] No existing position to sell
+2026-04-05 14:15:13,650 [RiskAgent] WARNING: Risk -> REJECTED [DOGEUSDT] No existing position to sell
+2026-04-05 14:15:13,652 [RiskAgent] WARNING: Risk -> REJECTED [XRPUSDT] No existing position to sell
+2026-04-05 14:15:13,652 [RiskAgent] WARNING: Risk -> REJECTED [BTCUSDT] No existing position to sell
+2026-04-05 14:15:13,653 [Orchestrator] INFO: No actionable signal found in this cycle
+2026-04-05 14:15:13,654 [Orchestrator] INFO: Portfolio | cash=500.00 USDT | positions=0.00 | equity=500.00 | realized_pnl=0.00 | trades=0
+2026-04-05 14:15:17,455 [Orchestrator] INFO: Simulation | tested=8 | avg_ret=2.26% | win_rate=12.5% | avg_dd=5.82% | best=DUSDT 27.92% | worst=SOLUSDT -3.83%
+2026-04-05 14:15:54,130 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:15:54,130 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 14:15:54,132 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 14:15:54,132 [Orchestrator] INFO: Interval: 1h | Quote asset: USDT
+2026-04-05 14:15:54,132 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:15:54,295 [DataAgent] INFO: DataAgent ready -> interval=1h quote=USDT max_symbols=35
+2026-04-05 14:15:54,295 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER
+2026-04-05 14:15:54,296 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 14:15:54,296 [Orchestrator] INFO: Cycle #1 | 2026-04-05T08:45:54.296551
+2026-04-05 14:15:55,293 [DataAgent] INFO: Selected 9 symbols for scanning (top by 24h quote volume)
+2026-04-05 14:15:56,616 [DataAgent] INFO: Fetched candles for 9/9 symbols
+2026-04-05 14:15:56,708 [Orchestrator] INFO: Top ranked signals: ETHUSDT:SELL:0.65 | SOLUSDT:SELL:0.65 | DOGEUSDT:SELL:0.64 | XRPUSDT:SELL:0.63 | BTCUSDT:SELL:0.62
+2026-04-05 14:15:56,708 [RiskAgent] WARNING: Risk -> REJECTED [ETHUSDT] No existing position to sell
+2026-04-05 14:15:56,709 [RiskAgent] WARNING: Risk -> REJECTED [SOLUSDT] No existing position to sell
+2026-04-05 14:15:56,709 [RiskAgent] WARNING: Risk -> REJECTED [DOGEUSDT] No existing position to sell
+2026-04-05 14:15:56,709 [RiskAgent] WARNING: Risk -> REJECTED [XRPUSDT] No existing position to sell
+2026-04-05 14:15:56,709 [RiskAgent] WARNING: Risk -> REJECTED [BTCUSDT] No existing position to sell
+2026-04-05 14:15:56,709 [Orchestrator] INFO: No actionable signal found in this cycle
+2026-04-05 14:15:56,711 [Orchestrator] INFO: Portfolio | cash=500.00 USDT | positions=0.00 | equity=500.00 | realized_pnl=0.00 | trades=0
+2026-04-05 14:15:59,425 [Orchestrator] INFO: Simulation | tested=8 | avg_ret=-1.37% | win_rate=12.5% | avg_dd=2.92% | best=ZECUSDT 2.08% | worst=SOLUSDT -3.82%
+2026-04-05 14:18:31,825 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:18:31,826 [Orchestrator] INFO: Trading Bot Starting
+2026-04-05 14:18:31,826 [Orchestrator] INFO: Mode: PAPER
+2026-04-05 14:18:31,826 [Orchestrator] INFO: Interval: 1h | Quote asset: USDT
+2026-04-05 14:18:31,826 [Orchestrator] INFO: ========================================================================
+2026-04-05 14:18:31,985 [DataAgent] INFO: DataAgent ready -> interval=1h quote=USDT max_symbols=35
+2026-04-05 14:18:31,985 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER
+2026-04-05 14:18:31,985 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-05 14:18:31,987 [Orchestrator] INFO: Cycle #1 | 2026-04-05T08:48:31.985945
+2026-04-05 14:18:32,915 [DataAgent] INFO: Selected 9 symbols for scanning (top by 24h quote volume)
+2026-04-05 14:18:34,219 [DataAgent] INFO: Fetched candles for 9/9 symbols
+2026-04-05 14:18:34,332 [Orchestrator] INFO: Top ranked signals: ETHUSDT:SELL:0.65 | SOLUSDT:SELL:0.65 | DOGEUSDT:SELL:0.64 | XRPUSDT:SELL:0.63 | BTCUSDT:SELL:0.62
+2026-04-05 14:18:34,332 [RiskAgent] WARNING: Risk -> REJECTED [ETHUSDT] No existing position to sell
+2026-04-05 14:18:34,333 [RiskAgent] WARNING: Risk -> REJECTED [SOLUSDT] No existing position to sell
+2026-04-05 14:18:34,333 [RiskAgent] WARNING: Risk -> REJECTED [DOGEUSDT] No existing position to sell
+2026-04-05 14:18:34,333 [RiskAgent] WARNING: Risk -> REJECTED [XRPUSDT] No existing position to sell
+2026-04-05 14:18:34,333 [RiskAgent] WARNING: Risk -> REJECTED [BTCUSDT] No existing position to sell
+2026-04-05 14:18:34,333 [Orchestrator] INFO: No actionable signal found in this cycle
+2026-04-05 14:18:34,333 [Orchestrator] INFO: Portfolio | cash=500.00 USDT | positions=0.00 | equity=500.00 | realized_pnl=0.00 | trades=0
+2026-04-05 14:18:46,199 [Orchestrator] INFO: Simulation | tested=8 | avg_ret=-1.58% | win_rate=12.5% | avg_dd=3.12% | best=ZECUSDT 0.49% | worst=SOLUSDT -3.84%
