@@ -14,15 +14,20 @@ from agents.regime_agent import RegimeAgent
 from config import (
     MARKET_MODE,
     SIMULATION_FEE_RATE,
+    WFO_ATR_PERIOD_CANDIDATES,
     WFO_EMA_FAST_CANDIDATES,
     WFO_EMA_SLOW_CANDIDATES,
     WFO_ENABLED,
+    WFO_MACD_FAST_CANDIDATES,
+    WFO_MACD_SIGNAL_CANDIDATES,
+    WFO_MACD_SLOW_CANDIDATES,
     WFO_MAX_SYMBOLS,
     WFO_MAX_PARAMETER_SETS,
     WFO_MIN_AVG_TEST_RETURN,
     WFO_MIN_SCORE_CANDIDATES,
     WFO_MIN_WIN_RATE,
     WFO_REOPTIMIZE_EVERY_CYCLES,
+    WFO_RSI_PERIOD_CANDIDATES,
     WFO_SIGNAL_STEP,
     WFO_RSI_OVERBOUGHT_CANDIDATES,
     WFO_RSI_OVERSOLD_CANDIDATES,
@@ -56,14 +61,32 @@ class TuningAgent:
 
     def _build_candidate_grid(self) -> List[StrategyParams]:
         params = []
-        for ema_fast, ema_slow, min_score, rsi_low, rsi_high in product(
+        for (
+            ema_fast,
+            ema_slow,
+            rsi_period,
+            macd_fast,
+            macd_slow,
+            macd_signal,
+            atr_period,
+            min_score,
+            rsi_low,
+            rsi_high,
+        ) in product(
             WFO_EMA_FAST_CANDIDATES,
             WFO_EMA_SLOW_CANDIDATES,
+            WFO_RSI_PERIOD_CANDIDATES,
+            WFO_MACD_FAST_CANDIDATES,
+            WFO_MACD_SLOW_CANDIDATES,
+            WFO_MACD_SIGNAL_CANDIDATES,
+            WFO_ATR_PERIOD_CANDIDATES,
             WFO_MIN_SCORE_CANDIDATES,
             WFO_RSI_OVERSOLD_CANDIDATES,
             WFO_RSI_OVERBOUGHT_CANDIDATES,
         ):
             if ema_fast >= ema_slow:
+                continue
+            if macd_fast >= macd_slow:
                 continue
             if rsi_low >= rsi_high:
                 continue
@@ -71,6 +94,11 @@ class TuningAgent:
                 StrategyParams(
                     ema_fast=ema_fast,
                     ema_slow=ema_slow,
+                    rsi_period=rsi_period,
+                    macd_fast=macd_fast,
+                    macd_slow=macd_slow,
+                    macd_signal=macd_signal,
+                    atr_period=atr_period,
                     min_signal_score=min_score,
                     rsi_oversold=rsi_low,
                     rsi_overbought=rsi_high,
@@ -85,6 +113,11 @@ class TuningAgent:
             key=lambda p: (
                 abs(p.ema_fast - default.ema_fast)
                 + abs(p.ema_slow - default.ema_slow)
+                + abs(p.rsi_period - default.rsi_period)
+                + abs(p.macd_fast - default.macd_fast)
+                + abs(p.macd_slow - default.macd_slow)
+                + abs(p.macd_signal - default.macd_signal)
+                + abs(p.atr_period - default.atr_period)
                 + abs(p.rsi_oversold - default.rsi_oversold)
                 + abs(p.rsi_overbought - default.rsi_overbought)
                 + abs(p.min_signal_score - default.min_signal_score) * 100.0

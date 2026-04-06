@@ -155,3 +155,59 @@
 2026-04-06 21:21:16,465 [RiskAgent] INFO: Risk -> APPROVED | Approved OPEN_LONG DOGEUSDT | conf=0.73 | lev=1x | notional=19.85 | SL=0.09179649 | TP=0.0970805
 2026-04-06 21:21:16,468 [Orchestrator] INFO: No actionable signal found in this cycle
 2026-04-06 21:21:16,468 [Orchestrator] INFO: Portfolio | mode=SPOT | cash=390.88 USDT | used_margin=0.00 | positions=109.09 | unrealized=0.00 | equity=499.97 | day=-0.01% | realized=0.00 | trades=4
+2026-04-06 21:36:04,944 [Orchestrator] INFO: ========================================================================
+2026-04-06 21:36:04,944 [Orchestrator] INFO: Trading Bot Starting
+2026-04-06 21:36:04,945 [Orchestrator] INFO: Mode: PAPER
+2026-04-06 21:36:04,947 [Orchestrator] INFO: Market mode: SPOT | Interval: 1h | Quote asset: USDT
+2026-04-06 21:36:04,947 [Orchestrator] INFO: ML Enabled: True | ML Weight: 0.40
+2026-04-06 21:36:04,949 [Orchestrator] INFO: ========================================================================
+2026-04-06 21:36:05,777 [DataAgent] INFO: DataAgent ready -> mode=SPOT interval=1h quote=USDT max_symbols=35
+2026-04-06 21:36:05,780 [PortfolioAgent] INFO: Loaded portfolio from state\portfolio.json
+2026-04-06 21:36:05,781 [PortfolioAgent] INFO: PortfolioAgent ready | mode=SPOT | cash=390.88 | positions=4
+2026-04-06 21:36:05,782 [PerformanceAgent] INFO: PerformanceAgent ready | log=state\performance_log.csv | cooldowns=0
+2026-04-06 21:36:05,782 [SentimentAgent] INFO: SentimentAgent ready | enabled=True | fear_threshold=20 | greed_threshold=80
+2026-04-06 21:36:05,784 [CorrelationAgent] INFO: CorrelationAgent ready | enabled=True | threshold=0.85 | lookback=50
+2026-04-06 21:36:05,785 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER | market=SPOT | order_type=MARKET | slippage_std=0.0003
+2026-04-06 21:36:06,735 [MLAgent] INFO: MLAgent disabled (torch not available) | sequence_length=30
+2026-04-06 21:36:06,736 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-06 21:36:06,738 [Orchestrator] INFO: Cycle #1 | 2026-04-06T16:06:06.736693+00:00
+2026-04-06 21:36:07,499 [DataAgent] INFO: Selected 18 symbols for scanning (top by 24h quote volume)
+2026-04-06 21:36:08,254 [DataAgent] INFO: Fetched candles for 18/18 symbols (async)
+2026-04-06 21:36:45,535 [Orchestrator] INFO: Regime distribution | bull=2 bear=0 sideways=16
+2026-04-06 21:36:46,729 [SentimentAgent] INFO: Sentiment updated | score=13 | label=Extreme Fear
+2026-04-06 21:36:46,729 [SentimentAgent] INFO: Market Sentiment | Score: 13/100 | Label: Extreme Fear
+2026-04-06 21:36:46,766 [CorrelationAgent] INFO: Correlation filter: kept 15, dropped 3 signals (threshold=0.85)
+2026-04-06 21:36:46,767 [Orchestrator] INFO: WFO quality | tuned=3 symbols | avg_test_ret=-0.006 | avg_win_rate=0.00
+2026-04-06 21:36:46,768 [Orchestrator] INFO: Top ranked signals: SUIUSDT:BUY:0.67 | STOUSDT:SELL:0.65 | TAOUSDT:BUY:0.63 | PAXGUSDT:BUY:0.62 | XRPUSDT:BUY:0.61
+2026-04-06 21:36:46,771 [Orchestrator] INFO: No actionable signal found in this cycle
+2026-04-06 21:36:46,772 [Orchestrator] INFO: Portfolio | mode=SPOT | cash=390.88 USDT | used_margin=0.00 | positions=109.06 | unrealized=0.00 | equity=499.94 | day=-0.01% | realized=0.00 | trades=4
+2026-04-06 21:43:21,395 [Orchestrator] INFO: ========================================================================
+2026-04-06 21:43:21,396 [Orchestrator] INFO: Trading Bot Starting
+2026-04-06 21:43:21,397 [Orchestrator] INFO: Mode: PAPER
+2026-04-06 21:43:21,398 [Orchestrator] INFO: Market mode: SPOT | Interval: 1h | Quote asset: USDT
+2026-04-06 21:43:21,399 [Orchestrator] INFO: ML Enabled: True | ML Weight: 0.40
+2026-04-06 21:43:21,400 [Orchestrator] INFO: ========================================================================
+2026-04-06 21:43:22,085 [DataAgent] INFO: DataAgent ready -> mode=SPOT interval=1h quote=USDT max_symbols=35
+2026-04-06 21:43:22,087 [PortfolioAgent] INFO: Loaded portfolio from state\portfolio.json
+2026-04-06 21:43:22,088 [PortfolioAgent] INFO: PortfolioAgent ready | mode=SPOT | cash=390.88 | positions=4
+2026-04-06 21:43:22,090 [PerformanceAgent] INFO: PerformanceAgent ready | log=state\performance_log.csv | cooldowns=0
+2026-04-06 21:43:22,091 [SentimentAgent] INFO: SentimentAgent ready | enabled=True | fear_threshold=20 | greed_threshold=80
+2026-04-06 21:43:22,091 [CorrelationAgent] INFO: CorrelationAgent ready | enabled=True | threshold=0.85 | lookback=50
+2026-04-06 21:43:22,092 [ExecutionAgent] INFO: ExecutionAgent ready | mode=PAPER | market=SPOT | order_type=MARKET | slippage_std=0.0003
+2026-04-06 21:43:23,247 [MLAgent] INFO: MLAgent disabled (torch not available) | sequence_length=30
+2026-04-06 21:43:23,248 [Orchestrator] INFO: 
+----------------------------------------------------------------------
+2026-04-06 21:43:23,250 [Orchestrator] INFO: Cycle #1 | 2026-04-06T16:13:23.248679+00:00
+2026-04-06 21:43:24,080 [DataAgent] INFO: Selected 18 symbols for scanning (top by 24h quote volume)
+2026-04-06 21:43:25,345 [DataAgent] INFO: Fetched candles for 18/18 symbols (async)
+2026-04-06 21:43:30,907 [Orchestrator] INFO: Received SIGINT, initiating graceful shutdown...
+2026-04-06 21:44:02,877 [Orchestrator] INFO: Regime distribution | bull=2 bear=0 sideways=16
+2026-04-06 21:44:04,105 [SentimentAgent] INFO: Sentiment updated | score=13 | label=Extreme Fear
+2026-04-06 21:44:04,109 [SentimentAgent] INFO: Market Sentiment | Score: 13/100 | Label: Extreme Fear
+2026-04-06 21:44:04,173 [CorrelationAgent] INFO: Correlation filter: kept 15, dropped 3 signals (threshold=0.85)
+2026-04-06 21:44:04,186 [Orchestrator] INFO: WFO quality | tuned=3 symbols | avg_test_ret=-0.006 | avg_win_rate=0.00
+2026-04-06 21:44:04,217 [Orchestrator] INFO: Top ranked signals: BNBUSDT:BUY:0.67 | SUIUSDT:BUY:0.67 | STOUSDT:SELL:0.65 | TAOUSDT:BUY:0.63 | PAXGUSDT:BUY:0.62
+2026-04-06 21:44:04,225 [Orchestrator] INFO: No actionable signal found in this cycle
+2026-04-06 21:44:04,250 [Orchestrator] INFO: Portfolio | mode=SPOT | cash=390.88 USDT | used_margin=0.00 | positions=109.08 | unrealized=0.00 | equity=499.96 | day=-0.01% | realized=0.00 | trades=4
+2026-04-06 21:44:04,275 [PerformanceAgent] INFO: Paper readiness report updated | ready=False | trades=0 | win_rate=0.0% | pnl=0.00 USDT

@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-04-06T16:14:04.269561+00:00",
+  "window_days": 7,
+  "ready_for_small_live": false,
+  "kpis": {
+    "total_trades": 0,
+    "win_rate": 0.0,
+    "profit_factor": 0.0,
+    "sharpe": 0.0,
+    "max_drawdown": 0.0,
+    "total_pnl_usdt": 0.0,
+    "expectancy_usdt_per_trade": 0.0,
+    "avg_win_usdt": 0.0,
+    "avg_loss_usdt": 0.0,
+    "best_symbol": null,
+    "worst_symbol": null
+  },
+  "thresholds": {
+    "min_trades": 40,
+    "min_win_rate": 0.55,
+    "min_profit_factor": 1.2,
+    "min_total_pnl_usdt": 10.0,
+    "max_drawdown": 8.0
+  },
+  "checks": {
+    "enough_trades": false,
+    "win_rate_ok": false,
+    "profit_factor_ok": false,
+    "pnl_ok": false,
+    "drawdown_ok": true
+  }
+}

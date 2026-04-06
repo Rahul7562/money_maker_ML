@@ -11,8 +11,15 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from config import (
+    PAPER_GRADUATION_MAX_DRAWDOWN,
+    PAPER_GRADUATION_MIN_PROFIT_FACTOR,
+    PAPER_GRADUATION_MIN_TOTAL_PNL_USDT,
+    PAPER_GRADUATION_MIN_TRADES,
+    PAPER_GRADUATION_MIN_WIN_RATE,
     STATE_DIR,
     SYMBOL_COOLDOWN_HOURS,
+    WEEKLY_REPORT_EVERY_HOURS,
+    WEEKLY_REPORT_WINDOW_DAYS,
 )
 
 logger = logging.getLogger("PerformanceAgent")
@@ -33,6 +40,8 @@ class PerformanceAgent:
         self.state_dir = Path(STATE_DIR)
         self.performance_file = self.state_dir / "performance_log.csv"
         self.cooldowns_file = self.state_dir / "cooldowns.json"
+        self.paper_report_json_file = self.state_dir / "paper_readiness_report.json"
+        self.paper_report_md_file = self.state_dir / "paper_readiness_report.md"
         
         # Ensure state directory exists
         self._ensure_state_dir()
@@ -44,6 +53,17 @@ class PerformanceAgent:
         self._trades_cache: Optional[List[Dict[str, Any]]] = None
         self._cache_timestamp: Optional[datetime] = None
         self._last_stats_log: Optional[datetime] = None
+        self._last_paper_report_write: Optional[datetime] = None
+
+        if self.paper_report_json_file.exists():
+            try:
+                ts = datetime.fromtimestamp(
+                    self.paper_report_json_file.stat().st_mtime,
+                    tz=timezone.utc,
+                )
+                self._last_paper_report_write = ts
+            except OSError:
+                self._last_paper_report_write = None
         
         # Initialize CSV file with headers if needed
         self._ensure_csv_headers()
@@ -213,6 +233,23 @@ class PerformanceAgent:
         self._cache_timestamp = now
         return trades
 
+    def _parse_timestamp(self, ts: str) -> Optional[datetime]:
+        try:
+            return datetime.fromisoformat(ts.replace("Z", "+00:00"))
+        except (ValueError, TypeError, AttributeError):
+            return None
+
+    def _get_trades_in_window(self, days: int) -> List[Dict[str, Any]]:
+        trades = self._load_trades()
+        cutoff = datetime.now(timezone.utc) - timedelta(days=days)
+
+        recent: List[Dict[str, Any]] = []
+        for t in trades:
+            ts = self._parse_timestamp(t.get("timestamp", ""))
+            if ts is not None and ts >= cutoff:
+                recent.append(t)
+        return recent
+
     def get_symbol_win_rate(self, symbol: str) -> float:
         """
         Get win rate for a specific symbol.
@@ -297,17 +334,7 @@ class PerformanceAgent:
             Dict with win_rate, profit_factor, sharpe, max_drawdown, 
             best_symbol, worst_symbol
         """
-        trades = self._load_trades()
-        cutoff = datetime.now(timezone.utc) - timedelta(days=days)
-        
-        recent_trades = []
-        for t in trades:
-            try:
-                ts = datetime.fromisoformat(t["timestamp"].replace("Z", "+00:00"))
-                if ts >= cutoff:
-                    recent_trades.append(t)
-            except (ValueError, TypeError):
-                continue
+        recent_trades = self._get_trades_in_window(days)
         
         if not recent_trades:
             return {
@@ -365,6 +392,137 @@ class PerformanceAgent:
             "total_trades": len(recent_trades),
             "total_pnl_usdt": round(sum(t["pnl_usdt"] for t in recent_trades), 2),
         }
+
+    def _profit_factor_to_float(self, value: Any) -> float:
+        if value == "inf":
+            return float("inf")
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return 0.0
+
+    def build_paper_readiness_report(self, window_days: Optional[int] = None) -> Dict[str, Any]:
+        """Build a KPI report with readiness checks for moving from paper to small live risk."""
+        days = int(window_days or WEEKLY_REPORT_WINDOW_DAYS)
+        recent_trades = self._get_trades_in_window(days)
+        stats = self.get_recent_stats(days=days)
+
+        wins = [t for t in recent_trades if t["pnl_usdt"] > 0]
+        losses = [t for t in recent_trades if t["pnl_usdt"] <= 0]
+        avg_win_usdt = (sum(t["pnl_usdt"] for t in wins) / len(wins)) if wins else 0.0
+        avg_loss_usdt = (abs(sum(t["pnl_usdt"] for t in losses)) / len(losses)) if losses else 0.0
+        expectancy_usdt = (
+            stats["total_pnl_usdt"] / stats["total_trades"] if stats["total_trades"] > 0 else 0.0
+        )
+
+        thresholds = {
+            "min_trades": PAPER_GRADUATION_MIN_TRADES,
+            "min_win_rate": PAPER_GRADUATION_MIN_WIN_RATE,
+            "min_profit_factor": PAPER_GRADUATION_MIN_PROFIT_FACTOR,
+            "min_total_pnl_usdt": PAPER_GRADUATION_MIN_TOTAL_PNL_USDT,
+            "max_drawdown": PAPER_GRADUATION_MAX_DRAWDOWN,
+        }
+
+        profit_factor_value = self._profit_factor_to_float(stats["profit_factor"])
+        checks = {
+            "enough_trades": stats["total_trades"] >= thresholds["min_trades"],
+            "win_rate_ok": stats["win_rate"] >= thresholds["min_win_rate"],
+            "profit_factor_ok": profit_factor_value >= thresholds["min_profit_factor"],
+            "pnl_ok": stats["total_pnl_usdt"] >= thresholds["min_total_pnl_usdt"],
+            "drawdown_ok": stats["max_drawdown"] <= thresholds["max_drawdown"],
+        }
+        ready = all(checks.values())
+
+        report = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "window_days": days,
+            "ready_for_small_live": ready,
+            "kpis": {
+                "total_trades": stats["total_trades"],
+                "win_rate": stats["win_rate"],
+                "profit_factor": stats["profit_factor"],
+                "sharpe": stats["sharpe"],
+                "max_drawdown": stats["max_drawdown"],
+                "total_pnl_usdt": stats["total_pnl_usdt"],
+                "expectancy_usdt_per_trade": round(expectancy_usdt, 4),
+                "avg_win_usdt": round(avg_win_usdt, 4),
+                "avg_loss_usdt": round(avg_loss_usdt, 4),
+                "best_symbol": stats["best_symbol"],
+                "worst_symbol": stats["worst_symbol"],
+            },
+            "thresholds": thresholds,
+            "checks": checks,
+        }
+        return report
+
+    def _format_paper_readiness_markdown(self, report: Dict[str, Any]) -> str:
+        kpis = report["kpis"]
+        checks = report["checks"]
+        thresholds = report["thresholds"]
+
+        lines = [
+            "# Paper Readiness Report",
+            "",
+            f"Generated at (UTC): {report['generated_at']}",
+            f"Window: last {report['window_days']} days",
+            f"Ready for small live: {'YES' if report['ready_for_small_live'] else 'NO'}",
+            "",
+            "## KPIs",
+            f"- Total trades: {kpis['total_trades']}",
+            f"- Win rate: {kpis['win_rate'] * 100:.2f}%",
+            f"- Profit factor: {kpis['profit_factor']}",
+            f"- Sharpe: {kpis['sharpe']}",
+            f"- Max drawdown: {kpis['max_drawdown']:.2f}%",
+            f"- Total PnL (USDT): {kpis['total_pnl_usdt']:.2f}",
+            f"- Expectancy per trade (USDT): {kpis['expectancy_usdt_per_trade']:.4f}",
+            f"- Avg win (USDT): {kpis['avg_win_usdt']:.4f}",
+            f"- Avg loss (USDT): {kpis['avg_loss_usdt']:.4f}",
+            f"- Best symbol: {kpis['best_symbol']}",
+            f"- Worst symbol: {kpis['worst_symbol']}",
+            "",
+            "## Checks",
+            f"- Trades >= {thresholds['min_trades']}: {'PASS' if checks['enough_trades'] else 'FAIL'}",
+            f"- Win rate >= {thresholds['min_win_rate'] * 100:.1f}%: {'PASS' if checks['win_rate_ok'] else 'FAIL'}",
+            f"- Profit factor >= {thresholds['min_profit_factor']:.2f}: {'PASS' if checks['profit_factor_ok'] else 'FAIL'}",
+            f"- Total PnL >= {thresholds['min_total_pnl_usdt']:.2f} USDT: {'PASS' if checks['pnl_ok'] else 'FAIL'}",
+            f"- Max drawdown <= {thresholds['max_drawdown']:.2f}%: {'PASS' if checks['drawdown_ok'] else 'FAIL'}",
+            "",
+        ]
+        return "\n".join(lines)
+
+    def write_paper_readiness_report(self, report: Dict[str, Any]) -> None:
+        """Persist paper readiness report in JSON and Markdown formats."""
+        try:
+            with open(self.paper_report_json_file, "w", encoding="utf-8") as f:
+                json.dump(report, f, indent=2)
+
+            markdown = self._format_paper_readiness_markdown(report)
+            with open(self.paper_report_md_file, "w", encoding="utf-8") as f:
+                f.write(markdown)
+        except IOError as e:
+            logger.error("Failed to write paper readiness report: %s", e)
+
+    def maybe_write_paper_readiness_report(self) -> None:
+        """Write a paper-readiness KPI report on a fixed cadence."""
+        now = datetime.now(timezone.utc)
+        cadence_hours = max(1, int(WEEKLY_REPORT_EVERY_HOURS))
+
+        if self._last_paper_report_write is not None:
+            elapsed = (now - self._last_paper_report_write).total_seconds()
+            if elapsed < cadence_hours * 3600:
+                return
+
+        report = self.build_paper_readiness_report()
+        self.write_paper_readiness_report(report)
+        self._last_paper_report_write = now
+
+        logger.info(
+            "Paper readiness report updated | ready=%s | trades=%s | win_rate=%.1f%% | pnl=%.2f USDT",
+            report["ready_for_small_live"],
+            report["kpis"]["total_trades"],
+            report["kpis"]["win_rate"] * 100,
+            report["kpis"]["total_pnl_usdt"],
+        )
 
     def get_sharpe_ratio(self, returns_list: List[float]) -> float:
         """

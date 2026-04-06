@@ -679,6 +679,7 @@ class Orchestrator:
 
             # ── STEP 14: LOGGING (daily stats) ──
             self.performance_agent.maybe_log_daily_stats()
+            self.performance_agent.maybe_write_paper_readiness_report()
 
         except Exception as exc:
             logger.error("Cycle failed: %s", exc, exc_info=True)
