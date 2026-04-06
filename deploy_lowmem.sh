@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # deploy_lowmem.sh - Optimized deployment for 1GB RAM / 1 CPU Linux VMs
 # This script installs with memory-optimized settings for constrained environments.
 
-set -e
+set -euo pipefail
 
 echo "=============================================="
 echo "  Money Maker ML - Low Memory Deployment"
@@ -13,7 +13,7 @@ echo ""
 # Step 1: System prep
 echo "[1/12] Installing system packages..."
 sudo apt update
-sudo apt install -y python3.11 python3.11-venv python3-pip git
+sudo apt install -y python3 python3-venv python3-pip git
 
 # Step 2: Create swap (essential for 1GB RAM)
 echo "[2/12] Setting up swap space (1GB)..."
@@ -33,18 +33,25 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "[3/12] Project directory: $SCRIPT_DIR"
 cd "$SCRIPT_DIR"
 
+if command -v python3.11 >/dev/null 2>&1; then
+    PYTHON_BIN="python3.11"
+else
+    PYTHON_BIN="python3"
+fi
+echo "Using interpreter: $PYTHON_BIN"
+
 # Step 4: Create virtual environment
-echo "[4/12] Creating Python 3.11 virtual environment..."
-python3.11 -m venv venv
+echo "[4/12] Creating virtual environment..."
+"$PYTHON_BIN" -m venv .venv
 
 # Step 5: Activate venv
 echo "[5/12] Activating virtual environment..."
-source venv/bin/activate
+source .venv/bin/activate
 
 # Step 6: Install base deps (without PyTorch initially)
 echo "[6/12] Installing Python dependencies (no ML)..."
-pip install --upgrade pip
-pip install pandas python-binance python-dotenv numpy aiohttp requests scikit-learn
+python -m pip install --upgrade pip
+python -m pip install pandas python-binance python-dotenv numpy aiohttp requests scikit-learn
 
 # Step 7: Optional PyTorch (only if >1.5GB RAM available)
 TOTAL_MEM=$(free -m | awk '/^Mem:/{print $2}')
@@ -52,7 +59,7 @@ echo "[7/12] Detected RAM: ${TOTAL_MEM}MB"
 
 if [ "$TOTAL_MEM" -gt 1500 ]; then
     echo "Installing PyTorch CPU-only for ML features..."
-    pip install torch --index-url https://download.pytorch.org/whl/cpu
+    python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
     ML_AVAILABLE="true"
 else
     echo "Skipping PyTorch (insufficient RAM). ML features disabled."
@@ -118,7 +125,7 @@ Wants=network-online.target
 Type=simple
 User=$LINUX_USER
 WorkingDirectory=$SCRIPT_DIR
-ExecStart=$SCRIPT_DIR/venv/bin/python main.py
+ExecStart=$SCRIPT_DIR/.venv/bin/python main.py
 Restart=always
 RestartSec=30
 StandardOutput=journal

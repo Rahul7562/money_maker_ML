@@ -262,21 +262,29 @@ class RiskAgent:
             trade_amount = notional_usdt
 
         # TASK 3.1: ATR-based stop loss
-        is_long = intent == "OPEN_LONG"
+        is_long = intent != "OPEN_SHORT"
         atr_stop = self._calculate_atr_stop(signal.atr_pct, is_long, current_price)
-        
-        # Fallback to original logic if ATR produces invalid stop
-        sl_pct = max(STOP_LOSS_PERCENT, signal.atr_pct * TRAILING_STOP_MULTIPLIER)
-        sl_pct = min(sl_pct, STOP_LOSS_PERCENT)  # Cap at max stop loss
+
+        # Use ATR-based risk when available, with safe fallback bounds.
+        atr_based_pct = signal.atr_pct * ATR_STOP_MULTIPLIER
+        if atr_based_pct <= 0:
+            atr_based_pct = STOP_LOSS_PERCENT
+        sl_pct = self._clamp(atr_based_pct, 0.002, STOP_LOSS_PERCENT)
         tp_pct = max(TAKE_PROFIT_PERCENT, sl_pct * 1.8)
 
         if intent == "OPEN_LONG":
-            stop_loss = round(atr_stop, 8)
+            stop_loss = round(
+                atr_stop if 0 < atr_stop < current_price else current_price * (1.0 - sl_pct),
+                8,
+            )
             take_profit = round(current_price * (1.0 + tp_pct), 8)
             trailing_stop = round(current_price * (1.0 - sl_pct * 0.7), 8)
             qty = round(notional_usdt / current_price, 8)
         elif intent == "OPEN_SHORT":
-            stop_loss = round(current_price * (1.0 + sl_pct), 8)
+            stop_loss = round(
+                atr_stop if atr_stop > current_price else current_price * (1.0 + sl_pct),
+                8,
+            )
             take_profit = round(current_price * (1.0 - tp_pct), 8)
             trailing_stop = round(current_price * (1.0 + sl_pct * 0.7), 8)
             qty = round(notional_usdt / current_price, 8)

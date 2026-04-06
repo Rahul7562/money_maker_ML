@@ -295,7 +295,7 @@ class ExecutionAgent:
                 else 0.0
             )
 
-            trailing_gap_pct = max(0.003, 1.0 - (decision.trailing_stop_price / actual_price)) if decision.trailing_stop_price > 0 else 0.015
+            trailing_gap_pct = max(0.003, 1.0 - (decision.trailing_stop_price / actual_price)) if decision.trailing_stop_price > 0 and actual_price > 0 else 0.015
             highest_price = max(float(current_pos.get("highest_price", 0.0)), actual_price)
 
             self.portfolio_agent.set_position(symbol, {
@@ -438,12 +438,13 @@ class ExecutionAgent:
             if new_qty == 0:
                 self.portfolio_agent.remove_position(symbol)
             else:
-                weighted_avg = (
-                    (abs(prev_qty) * float(pos.get("avg_price", 0.0)) + qty_delta * actual_price) / abs(new_qty)
-                    if prev_qty != 0
-                    else actual_price
-                )
-                trailing_gap = max(0.003, abs(1.0 - (decision.trailing_stop_price / actual_price))) if decision.trailing_stop_price > 0 else 0.015
+                # Calculate weighted average price for the new position
+                if prev_qty != 0:
+                    prev_avg = float(pos.get("avg_price", 0.0))
+                    weighted_avg = (abs(prev_qty) * prev_avg + qty_delta * actual_price) / abs(new_qty)
+                else:
+                    weighted_avg = actual_price
+                trailing_gap = max(0.003, abs(1.0 - (decision.trailing_stop_price / actual_price))) if decision.trailing_stop_price > 0 and actual_price > 0 else 0.015
                 self.portfolio_agent.set_position(symbol, {
                     "qty": new_qty,
                     "avg_price": weighted_avg,

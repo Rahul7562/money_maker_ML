@@ -32,3 +32,24 @@ pkill -f "python main.py"
 - Paper + Spot mode does not require API keys.
 - Live trading requires BINANCE_API_KEY and BINANCE_API_SECRET in `.env`.
 - Keep `.env` private; it is ignored by `.gitignore`.
+
+## Recommended Profile (Balanced)
+- The Linux deploy flow now bootstraps `.env` from `.env.example` if missing.
+- `.env.example` is tuned for a balanced VPS profile (good risk-adjusted throughput).
+- Before live mode, review at least: `PAPER_TRADING`, `MAX_TRADE_PERCENT`, `MAX_OPEN_POSITIONS`, `MAX_DAILY_DRAWDOWN_PERCENT`, and API keys.
+
+## Quick Profile Overrides
+For stronger hardware (4GB+ RAM), you can increase:
+```bash
+MAX_SYMBOLS_ANALYZED=35
+MAX_OPEN_POSITIONS=4
+SIMULATION_ENABLED=true
+```
+
+For 1GB RAM VMs, keep:
+```bash
+MAX_SYMBOLS_ANALYZED=15
+MAX_OPEN_POSITIONS=3
+ML_ENABLED=false
+SIMULATION_ENABLED=false
+```

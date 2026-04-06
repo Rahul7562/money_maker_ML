@@ -352,6 +352,26 @@ class Orchestrator:
             marks = {
                 sym: float(df["close"].iloc[-1]) for sym, df in market_data.items()
             }
+            latest_candles = {
+                sym: {
+                    "high": float(df["high"].iloc[-1]),
+                    "low": float(df["low"].iloc[-1]),
+                    "close": float(df["close"].iloc[-1]),
+                }
+                for sym, df in market_data.items()
+                if not df.empty
+            }
+
+            if PAPER_TRADING and self.execution_agent.pending_limit_orders:
+                limit_results = self.execution_agent.process_pending_limit_orders(latest_candles)
+                if limit_results:
+                    executed_count = len([r for r in limit_results if r.get("status") == "paper_executed"])
+                    expired_count = len([r for r in limit_results if r.get("status") == "limit_expired"])
+                    logger.info(
+                        "Pending LIMIT orders processed | executed=%s expired=%s",
+                        executed_count,
+                        expired_count,
+                    )
 
             # ── STEP 2: AUTO_EXITS ──
             if PAPER_TRADING:
@@ -400,7 +420,7 @@ class Orchestrator:
                 logger.info("ML training result: %s", train_result.get("status"))
             
             # Apply ML score blending if enabled
-            if ML_ENABLED and self.ml_agent._model_loaded:
+            if ML_ENABLED and self.ml_agent.is_model_loaded():
                 ml_adjusted_count = 0
                 for sig in signals:
                     if sig.action in {"BUY", "SELL"}:
@@ -501,10 +521,6 @@ class Orchestrator:
                 if candidate.action not in {"BUY", "SELL"}:
                     continue
                 
-                # Skip symbols already in open positions
-                if candidate.symbol in open_position_symbols:
-                    continue
-                
                 # Check regime allows action
                 candidate_regime = regimes.get(candidate.symbol)
                 if candidate_regime and not self.regime_agent.allows_action(candidate_regime.regime, candidate.action):
@@ -539,6 +555,9 @@ class Orchestrator:
                 )
 
                 if not decision.approved:
+                    continue
+
+                if candidate.symbol in open_position_symbols and decision.position_intent.startswith("OPEN"):
                     continue
                 
                 # ── STEP 10: PERFORMANCE_CHECK (cooldown) ──

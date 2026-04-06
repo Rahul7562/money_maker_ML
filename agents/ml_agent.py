@@ -17,6 +17,25 @@ try:
     from torch.utils.data import DataLoader, TensorDataset
     TORCH_AVAILABLE = True
 except ImportError:
+    class _TorchStub:
+        class Tensor:
+            pass
+
+        @staticmethod
+        def device(_name: str):
+            return None
+
+        @staticmethod
+        def log_softmax(*_args, **_kwargs):
+            raise RuntimeError("PyTorch is not installed")
+
+    class _NNStub:
+        class Module:
+            pass
+
+    torch = _TorchStub()  # type: ignore[assignment]
+    nn = _NNStub()  # type: ignore[assignment]
+    DataLoader = TensorDataset = None  # type: ignore[assignment]
     TORCH_AVAILABLE = False
 
 from config import (
@@ -194,6 +213,10 @@ class MLAgent:
         status = "ready" if self.enabled else "disabled (torch not available)"
         logger.info("MLAgent %s | sequence_length=%d", status, self.sequence_length)
 
+    def is_model_loaded(self) -> bool:
+        """Check if a trained model is loaded and ready for predictions."""
+        return self._model_loaded
+
     def _load_model_if_exists(self) -> bool:
         """Load model from disk if it exists and is fresh."""
         if not self.model_file.exists():
@@ -204,8 +227,12 @@ class MLAgent:
             if self.model_meta_file.exists():
                 with open(self.model_meta_file, "r") as f:
                     meta = json.load(f)
-                last_train = datetime.fromisoformat(meta.get("last_train", "2000-01-01"))
-                if datetime.now(timezone.utc) - last_train.replace(tzinfo=timezone.utc) < timedelta(hours=24):
+                last_train_str = meta.get("last_train", "2000-01-01")
+                last_train = datetime.fromisoformat(last_train_str.replace("Z", "+00:00"))
+                # Ensure timezone-aware comparison
+                if last_train.tzinfo is None:
+                    last_train = last_train.replace(tzinfo=timezone.utc)
+                if datetime.now(timezone.utc) - last_train < timedelta(hours=24):
                     self._last_train_time = last_train
             
             # Load model

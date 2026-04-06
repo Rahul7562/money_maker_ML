@@ -327,6 +327,17 @@ class DataAgent:
         
         try:
             # Use asyncio to fetch concurrently
+            # Check if there's already a running event loop
+            try:
+                loop = asyncio.get_running_loop()
+                # If we're already in an async context, we can't use run_until_complete
+                # Fall back to sequential fetching
+                logger.debug("Running inside existing event loop, falling back to sequential fetch")
+                raise RuntimeError("Already in async context")
+            except RuntimeError:
+                # No running loop, safe to create one
+                pass
+            
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             try:
@@ -335,6 +346,7 @@ class DataAgent:
                 )
             finally:
                 loop.close()
+                asyncio.set_event_loop(None)  # Clean up the event loop reference
             
             if market_data:
                 logger.info("Fetched candles for %s/%s symbols (async)", len(market_data), len(symbols))

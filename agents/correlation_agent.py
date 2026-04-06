@@ -147,9 +147,11 @@ class CorrelationAgent:
                     break
             
             if should_drop:
+                # corr is defined when should_drop is True (set in the loop that sets should_drop)
+                corr_value = abs(self._correlation_matrix.loc[symbol, correlated_with]) if correlated_with else 0.0
                 logger.debug(
                     "Dropping %s (score=%.3f) - correlated %.3f with %s",
-                    symbol, signal.score, corr, correlated_with
+                    symbol, signal.score, corr_value, correlated_with
                 )
                 dropped_count += 1
             else:

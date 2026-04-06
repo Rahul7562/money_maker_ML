@@ -106,7 +106,9 @@ class AnalysisAgent:
             axis=1,
         ).max(axis=1)
         data["atr"] = tr.rolling(params.atr_period).mean().bfill()
-        data["atr_pct"] = (data["atr"] / close).replace([pd.NA, pd.NaT], 0.0)
+        # Avoid division by zero and handle NaN/Inf
+        close_safe = close.replace(0, 1e-12)
+        data["atr_pct"] = (data["atr"] / close_safe).replace([pd.NA, pd.NaT, float('inf'), float('-inf')], 0.0).fillna(0.0)
 
         # Momentum
         data["ret_3"] = close.pct_change(3).fillna(0.0)

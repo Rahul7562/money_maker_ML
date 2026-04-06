@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # deploy_linux.sh - Deploy Money Maker ML Trading Bot on Ubuntu
 # This script installs dependencies, sets up the virtual environment,
 # and configures systemd to run the bot as a service.
 
-set -e
+set -euo pipefail
 
 echo "=============================================="
 echo "  Money Maker ML Trading Bot - Deployment"
@@ -12,29 +12,48 @@ echo ""
 
 # Step 1: Update system and install dependencies
 echo "[1/14] Updating system packages..."
-sudo apt update && sudo apt install -y python3.11 python3.11-venv python3-pip git
+sudo apt update
+sudo apt install -y python3 python3-venv python3-pip git curl
 
 # Step 2: Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "[2/14] Project directory: $SCRIPT_DIR"
 cd "$SCRIPT_DIR"
 
+# Pick the best available Python interpreter on the VM
+if command -v python3.11 >/dev/null 2>&1; then
+    PYTHON_BIN="python3.11"
+else
+    PYTHON_BIN="python3"
+fi
+echo "Using interpreter: $PYTHON_BIN"
+
 # Step 3: Create virtual environment
-echo "[3/14] Creating Python 3.11 virtual environment..."
-python3.11 -m venv venv
+echo "[3/14] Creating virtual environment..."
+"$PYTHON_BIN" -m venv .venv
 
 # Step 4: Activate virtual environment
 echo "[4/14] Activating virtual environment..."
-source venv/bin/activate
+source .venv/bin/activate
 
 # Step 5: Install Python dependencies
 echo "[5/14] Installing Python dependencies..."
-pip install --upgrade pip
-pip install -r requirements.txt
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 
 # Step 6: Create state directory
 echo "[6/14] Creating state directory..."
 mkdir -p state/
+
+# Create .env from tuned template for first run
+if [[ ! -f .env ]]; then
+    if [[ -f .env.example ]]; then
+        cp .env.example .env
+        echo "Created .env from .env.example (balanced profile)."
+    else
+        echo "Warning: .env.example not found; continuing without .env bootstrap."
+    fi
+fi
 
 # Step 7: Ask for Linux username
 echo ""
@@ -47,9 +66,19 @@ if ! id "$LINUX_USER" &>/dev/null; then
     exit 1
 fi
 
-# Step 8: Replace %i with username in service file
+# Step 8: Render service template with user/workdir/python path
 echo "[8/14] Configuring systemd service for user '$LINUX_USER'..."
-sed "s/%i/$LINUX_USER/g" trading_bot.service > /tmp/trading_bot.service
+PYTHON_PATH="$SCRIPT_DIR/.venv/bin/python"
+sed \
+    -e "s|__LINUX_USER__|$LINUX_USER|g" \
+    -e "s|__WORKDIR__|$SCRIPT_DIR|g" \
+    -e "s|__PYTHON_BIN__|$PYTHON_PATH|g" \
+    trading_bot.service > /tmp/trading_bot.service
+
+if grep -q "__LINUX_USER__\|__WORKDIR__\|__PYTHON_BIN__" /tmp/trading_bot.service; then
+    echo "Error: Failed to render systemd service template."
+    exit 1
+fi
 
 # Step 9: Copy service file to systemd
 echo "[9/14] Installing systemd service..."

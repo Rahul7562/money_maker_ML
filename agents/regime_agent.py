@@ -95,10 +95,20 @@ class RegimeAgent:
             return self.allow_sideways
 
         if regime == "BULL":
-            return action == "BUY"
+            # Allow BUY in bull regime, also allow SELL to close existing positions
+            if action == "BUY":
+                return True
+            # Allow SELL for closing positions (important for SPOT to exit longs)
+            if action == "SELL":
+                return True
+            return False
 
         if regime == "BEAR":
+            # Allow SELL/SHORT in bear regime for futures
             if action == "SELL" and self.mode == "FUTURES" and self.enable_futures_shorts:
+                return True
+            # Allow SELL for closing long positions in SPOT mode
+            if action == "SELL" and self.mode == "SPOT":
                 return True
             return False
 

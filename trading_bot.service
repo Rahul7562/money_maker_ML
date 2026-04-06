@@ -5,14 +5,15 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=%i
-WorkingDirectory=/home/%i/money_maker_ML
-ExecStart=/home/%i/money_maker_ML/venv/bin/python main.py
+User=__LINUX_USER__
+WorkingDirectory=__WORKDIR__
+ExecStart=__PYTHON_BIN__ main.py
 Restart=always
 RestartSec=10
 StandardOutput=journal
 StandardError=journal
 Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
 
 [Install]
 WantedBy=multi-user.target

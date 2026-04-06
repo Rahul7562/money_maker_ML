@@ -147,7 +147,7 @@ STATE_DIR = os.getenv("STATE_DIR", "state/")
 ML_ENABLED = _as_bool("ML_ENABLED", True)
 ML_WEIGHT = float(os.getenv("ML_WEIGHT", "0.4"))
 ML_MIN_CONFIDENCE = float(os.getenv("ML_MIN_CONFIDENCE", "0.60"))
-ML_SEQUENCE_LENGTH = int(os.getenv("ML_SEQUENCE_LENGTH", "60"))
+ML_SEQUENCE_LENGTH = int(os.getenv("ML_SEQUENCE_LENGTH", "30"))
 ML_RETRAIN_EVERY_N_TUNING_CYCLES = int(os.getenv("ML_RETRAIN_EVERY_N_TUNING_CYCLES", "3"))
 ML_EARLY_STOPPING_PATIENCE = int(os.getenv("ML_EARLY_STOPPING_PATIENCE", "10"))
 
