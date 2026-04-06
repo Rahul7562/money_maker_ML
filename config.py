@@ -62,6 +62,13 @@ EXCLUDED_SYMBOL_KEYWORDS = (
     "EUR",
     "BRL",
     "TRY",
+    "USDC",
+    "BUSD",
+    "TUSD",
+    "FDUSD",
+    "DAI",
+    "USDP",
+    "USDD",
 )
 
 # --- Risk ---
@@ -97,15 +104,15 @@ MIN_SIGNAL_SCORE = float(os.getenv("MIN_SIGNAL_SCORE", "0.56"))
 REGIME_ADX_PERIOD = int(os.getenv("REGIME_ADX_PERIOD", "14"))
 REGIME_TREND_ADX_THRESHOLD = float(os.getenv("REGIME_TREND_ADX_THRESHOLD", "24"))
 REGIME_SIDEWAYS_ATR_THRESHOLD = float(os.getenv("REGIME_SIDEWAYS_ATR_THRESHOLD", "0.015"))
-ALLOW_SIDEWAYS_TRADES = _as_bool("ALLOW_SIDEWAYS_TRADES", False)
+ALLOW_SIDEWAYS_TRADES = _as_bool("ALLOW_SIDEWAYS_TRADES", True)
 
 # --- Walk-Forward Tuning ---
 WFO_ENABLED = _as_bool("WFO_ENABLED", True)
-WFO_REOPTIMIZE_EVERY_CYCLES = int(os.getenv("WFO_REOPTIMIZE_EVERY_CYCLES", "8"))
-WFO_MAX_SYMBOLS = int(os.getenv("WFO_MAX_SYMBOLS", "4"))
-WFO_MAX_PARAMETER_SETS = int(os.getenv("WFO_MAX_PARAMETER_SETS", "16"))
-WFO_SIGNAL_STEP = int(os.getenv("WFO_SIGNAL_STEP", "3"))
-WFO_TIME_BUDGET_SECONDS = float(os.getenv("WFO_TIME_BUDGET_SECONDS", "8"))
+WFO_REOPTIMIZE_EVERY_CYCLES = int(os.getenv("WFO_REOPTIMIZE_EVERY_CYCLES", "12"))
+WFO_MAX_SYMBOLS = int(os.getenv("WFO_MAX_SYMBOLS", "3"))
+WFO_MAX_PARAMETER_SETS = int(os.getenv("WFO_MAX_PARAMETER_SETS", "12"))
+WFO_SIGNAL_STEP = int(os.getenv("WFO_SIGNAL_STEP", "5"))
+WFO_TIME_BUDGET_SECONDS = float(os.getenv("WFO_TIME_BUDGET_SECONDS", "6"))
 WFO_TRAIN_CANDLES = int(os.getenv("WFO_TRAIN_CANDLES", "160"))
 WFO_TEST_CANDLES = int(os.getenv("WFO_TEST_CANDLES", "60"))
 WFO_STEP_CANDLES = int(os.getenv("WFO_STEP_CANDLES", "30"))
@@ -130,3 +137,53 @@ PAPER_STARTING_USDT = float(os.getenv("PAPER_STARTING_USDT", "500"))
 
 # --- Logging ---
 LOG_FILE = os.getenv("LOG_FILE", "bot.log")
+LOG_ROTATION_MB = int(os.getenv("LOG_ROTATION_MB", "50"))
+LOG_MAX_BACKUPS = int(os.getenv("LOG_MAX_BACKUPS", "5"))
+
+# --- State Persistence ---
+STATE_DIR = os.getenv("STATE_DIR", "state/")
+
+# --- ML (PyTorch LSTM) ---
+ML_ENABLED = _as_bool("ML_ENABLED", True)
+ML_WEIGHT = float(os.getenv("ML_WEIGHT", "0.4"))
+ML_MIN_CONFIDENCE = float(os.getenv("ML_MIN_CONFIDENCE", "0.60"))
+ML_SEQUENCE_LENGTH = int(os.getenv("ML_SEQUENCE_LENGTH", "60"))
+ML_RETRAIN_EVERY_N_TUNING_CYCLES = int(os.getenv("ML_RETRAIN_EVERY_N_TUNING_CYCLES", "3"))
+ML_EARLY_STOPPING_PATIENCE = int(os.getenv("ML_EARLY_STOPPING_PATIENCE", "10"))
+
+# --- Sentiment ---
+SENTIMENT_ENABLED = _as_bool("SENTIMENT_ENABLED", True)
+SENTIMENT_EXTREME_FEAR_THRESHOLD = int(os.getenv("SENTIMENT_EXTREME_FEAR_THRESHOLD", "20"))
+SENTIMENT_EXTREME_GREED_THRESHOLD = int(os.getenv("SENTIMENT_EXTREME_GREED_THRESHOLD", "80"))
+SENTIMENT_CACHE_HOURS = int(os.getenv("SENTIMENT_CACHE_HOURS", "4"))
+
+# --- Correlation ---
+CORRELATION_FILTER_ENABLED = _as_bool("CORRELATION_FILTER_ENABLED", True)
+CORRELATION_THRESHOLD = float(os.getenv("CORRELATION_THRESHOLD", "0.85"))
+CORRELATION_LOOKBACK = int(os.getenv("CORRELATION_LOOKBACK", "50"))
+
+# --- Risk (Additional) ---
+ATR_STOP_MULTIPLIER = float(os.getenv("ATR_STOP_MULTIPLIER", "1.5"))
+SYMBOL_COOLDOWN_HOURS = int(os.getenv("SYMBOL_COOLDOWN_HOURS", "24"))
+KELLY_ENABLED = _as_bool("KELLY_ENABLED", True)
+KELLY_MIN_TRADES = int(os.getenv("KELLY_MIN_TRADES", "20"))
+
+# --- Analysis (Additional) ---
+MTF_ENABLED = _as_bool("MTF_ENABLED", False)
+MTF_HIGHER_INTERVAL = os.getenv("MTF_HIGHER_INTERVAL", "4h")
+
+# --- Multi-trade ---
+MIN_SCORE_FOR_SLOT_2_PLUS = float(os.getenv("MIN_SCORE_FOR_SLOT_2_PLUS", "0.63"))
+
+# --- Sideways ---
+SIDEWAYS_MIN_SCORE = float(os.getenv("SIDEWAYS_MIN_SCORE", "0.68"))
+
+# --- Execution ---
+PAPER_ORDER_TYPE = os.getenv("PAPER_ORDER_TYPE", "MARKET")
+SLIPPAGE_STD = float(os.getenv("SLIPPAGE_STD", "0.0003"))
+
+# --- Notifications ---
+TELEGRAM_ENABLED = _as_bool("TELEGRAM_ENABLED", False)
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
+HEALTH_CHECK_PORT = int(os.getenv("HEALTH_CHECK_PORT", "8080"))
